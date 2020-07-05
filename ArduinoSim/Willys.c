@@ -40,12 +40,14 @@ int numWiperToggles = -1; // number of times wiper switch has been cycled within
 const unsigned long maxInterval = 20000;
 unsigned long lastWiperChange = 0;
 bool wiper0old, wiper1old;
-int lightMode = 0; // 0:all off  1:low power (rocklights+ryggelys) 2:all on
-bool ign, ignOld;
+int lightMode = 1; // 0:all off  1:low power (rocklights+ryggelys)
+bool ign=true, ignOld;
+bool rocklights2state;
+bool ryggelys;
 
 int debugWrite(int pin, int n) {
   #ifdef debug
-   Serial.print(bool(n));
+   Serial.println(bool(n));
   #endif
   digitalWrite(pin,n);
   return n;
@@ -59,12 +61,15 @@ void setup()
 
 	initAutogenPins();
 
+    ign = true; // Ignition/main. Inverse signal
+    lightMode = 1;
+
 }
 
 void loop()
 {
 
-	if ((ign = debugWrite(cign, digitalRead(ign0))))// Ignition/main. Inverse signal
+	/*if ((ign = debugWrite(cign, digitalRead(ign0))))// Ignition/main. Inverse signal
 		lightMode = 2;
 	if (ignOld!=ign) {
 		if (!(ignOld = ign))
@@ -73,34 +78,44 @@ void loop()
 	}
     
 	if (debugWrite(cstart,!digitalRead(start)))   // Start
-		lightMode=0; 
+		lightMode=0; */
 
     if (!digitalRead(hibeam) && highBeamButtonState) {        // High beam
             highBeam=!highBeam;
-			if (!ign) {
-				lightMode++;
-				if (lightMode > 2) lightMode = 0;
-			}
     } 
     highBeamButtonState=digitalRead(hibeam);
  
         // Detta er en luring. Har jeg klart å tenke rektig i blinde her nå
         // så skal den toggle highBeam BARE når highbeam-knappen skifter fra ON til OFF
 
-   
+    if (!digitalRead(rocklights2) && rocklights2state) {
+        lightMode++;
+        if (lightMode > 1) lightMode = 0;
+    }
+    rocklights2state = digitalRead(rocklights2);
+
 
 
 //    if ((digitalRead(hibeam)==LOW)&&!digitalRead(lys0))
 //     highBeam=true; //  lyshorn!
 
-	if (!debugWrite(clys, digitalRead(lys0)&&(lightMode==2)))      // Lys (main). Fulltlys alltid av ved oppstart
+	if (!debugWrite(clys, lightMode) || !digitalRead(lys0))      // Lys (main). Fulltlys alltid av ved oppstart
 		highBeam = false;
 
-    debugWrite(chibeam,highBeam&&ign);
+    debugWrite(chibeaml, highBeam && ign);
+    debugWrite(chibeamr, highBeam && ign);
 
+    debugWrite(clowbeam, digitalRead(lys0) ^ highBeam);
 
-	for (int i=0; i<2; i++) { // traverse both side blinkers & switches
-     bl[i]=!digitalRead(26+i);
+    ryggelys = !digitalRead(rygg) || !digitalRead(rocklights); // Ryggelys
+    debugWrite(crocklights, !digitalRead(rocklights) && lightMode); // rock lights
+    debugWrite(cbrake, !digitalRead(brake)); // Bremselys
+    //debugWrite(A12,!digitalRead(36)); // Horn
+
+    bl[0] = !digitalRead(blinkl);
+    bl[1] = !digitalRead(blinkr);
+
+    for (int i=0; i<2; i++) { // traverse both side blinkers & switches
      if (bl[i]||(hazard>4)) // if switch on OR hazard set
       if ((millis()-blinkTimer)>500) { // do only if .5 sec passed
        blinker[i]=!blinker[i];
@@ -120,13 +135,19 @@ void loop()
         blinkTimer=millis();
         
       }
-     digitalWrite(44+i,blinker[i]);
-     }
+    }
     if (hazard<0) hazard=0;
     if ((millis()-blinkTimer>400)&&(!bl[0]&&!bl[1])) {
      hazard=0;
      blinker[0]=blinker[1]=0;
     }
+
+    debugWrite(cblinkfl, blinker[0] ^ lightMode);
+    debugWrite(cblinkrl, blinker[0] ^ ryggelys);
+
+    debugWrite(cblinkfr, blinker[1] ^ lightMode);
+    debugWrite(cblinkrr, blinker[1] ^ ryggelys);
+
    
        
 	// Wipers
@@ -168,14 +189,14 @@ void loop()
 	wiper1old = digitalRead(wiper1);
 
 
-	if (!digitalRead(comp) && lightMode) { // compressor
+	if (!digitalRead(comp)) { // compressor
 		debugWrite(ccomp, HIGH);
-		debugWrite(carbfront, arbfront);
-		debugWrite(carbrear, arbrear);
+		debugWrite(carbfront, !digitalRead(arbfront));
+		debugWrite(carbrear, !digitalRead(arbrear));
 		wVF = wHF = wVB = wHB = false; // clear write registers
 
         rOpp=!digitalRead(joyN);  // poll joystick
-        rH=!digitalRead(joyE);      // and store in r*
+        rH=!digitalRead(joyE);    // and store in r*
         rV=!digitalRead(joyW);
         rNed=!digitalRead(joyS);
 
@@ -211,13 +232,8 @@ void loop()
     }
 
 
-    debugWrite(51,!digitalRead(29)&&lightMode); // rock lights
-    debugWrite(52,!digitalRead(30)); // Bremselys
-	debugWrite(53, !digitalRead(31) || ((lightMode==2)&&!ign)); // Ryggelys
-    debugWrite(A12,!digitalRead(36)); // Horn
-
 	fanResult = !digitalRead(fan1) || !digitalRead(radiator);
-	if (!digitalRead(fan0)||(lightMode<2)) fanResult=false;
+	if (!digitalRead(fan0)) fanResult=false;
 	
 	debugWrite(cfan,fanResult);
 
