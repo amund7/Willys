@@ -4,7 +4,7 @@
 #include "autogentags.h"
 
 int inFrom=22;
-int inTo=36;
+int inTo=42;
 int outFrom=40;
 int outTo=53;
 
@@ -109,8 +109,8 @@ void loop()
 
     debugWrite(clowbeam, digitalRead(lys0) ^ highBeam);
 
-    ryggelys = !digitalRead(rygg) || !digitalRead(rocklights); // Ryggelys
-    debugWrite(crocklights, !digitalRead(rocklights) && lightMode); // rock lights
+    ryggelys = !digitalRead(rygg) || digitalRead(rocklights); // Ryggelys
+    debugWrite(crocklights, digitalRead(rocklights) && lightMode); // rock lights
     debugWrite(cbrake, !digitalRead(brake)); // Bremselys
     //debugWrite(A12,!digitalRead(36)); // Horn
 
@@ -185,7 +185,7 @@ void loop()
 	}
 
 //	wiperRun=(&&digitalRead(33))||wiperRun; 
-    digitalWrite(cwiper,wiperRun&&ign); // styring av vinduspussermotor
+    debugWrite(cwiper,wiperRun&&ign); // styring av vinduspussermotor
 
 	wiper0old = digitalRead(wiper0); // store switch state
 	wiper1old = digitalRead(wiper1);
@@ -242,11 +242,14 @@ void loop()
 
 
    // debug
-/*    for (int i=outFrom; i<=outTo; i++)
-        Serial.print(bool(digitalRead(i)));*/
-   #ifdef debug
+    #ifdef debug
+    for (int i = inFrom; i <= inTo; i++) {
+        Serial.print(i);
+        Serial.print("\t");
+        Serial.println(bool(digitalRead(i)));
+    }
     Serial.println();
-    delay(50);
+    delay(20);
    #endif
 
 
