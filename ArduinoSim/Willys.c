@@ -47,7 +47,9 @@ bool ryggelys;
 
 int debugWrite(int pin, int n) {
   #ifdef debug
-   Serial.println(bool(n));
+    Serial.print(pin);
+    Serial.print("\t");
+    Serial.println(bool(n));
   #endif
   digitalWrite(pin,n);
   return n;
@@ -56,7 +58,7 @@ int debugWrite(int pin, int n) {
 void setup()
 {
        #ifdef debug
-	Serial.begin(9600);
+	Serial.begin(115200);
        #endif
 
 	initAutogenPins();
