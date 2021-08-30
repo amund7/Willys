@@ -111,7 +111,9 @@ void loop()
 
     ryggelys = !digitalRead(rygg) || digitalRead(rocklights); // Ryggelys
     debugWrite(crocklights, digitalRead(rocklights) && lightMode); // rock lights
-    debugWrite(cbrake, !digitalRead(brake)); // Bremselys
+    bool br = !digitalRead(brake);
+    debugWrite(cbrakel, br ^ (br && wVB)); // Bremselys
+    debugWrite(cbraker, br ^ (br && wHB)); // Bremselys
     //debugWrite(A12,!digitalRead(36)); // Horn
 
     bl[0] = !digitalRead(blinkl);
@@ -144,10 +146,10 @@ void loop()
      blinker[0]=blinker[1]=0;
     }
 
-    debugWrite(cblinkfl, blinker[0] ^ lightMode);
+    debugWrite(cblinkfl, blinker[0] ^ ((lightMode && !wVF) || wHF)); // (a && ~c) || b
     debugWrite(cblinkrl, blinker[0] ^ ryggelys);
 
-    debugWrite(cblinkfr, blinker[1] ^ lightMode);
+    debugWrite(cblinkfr, blinker[1] ^ ((lightMode && !wHF) || wVF)); // (a && ~c) || b
     debugWrite(cblinkrr, blinker[1] ^ ryggelys);
 
    
@@ -230,6 +232,7 @@ void loop()
         debugWrite(chb,LOW);
 		debugWrite(carbfront, LOW);
 		debugWrite(carbrear, LOW);
+        rH = rV = rOpp = rNed = false;
 
     }
 
