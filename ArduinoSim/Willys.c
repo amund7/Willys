@@ -5,8 +5,8 @@
 
 int inFrom=22;
 int inTo=42;
-int outFrom=40;
-int outTo=53;
+int outFrom=4;
+int outTo=A15;
 
 int highBeamButtonState=HIGH;
 bool highBeam=false;
@@ -51,18 +51,21 @@ int debugWrite(int pin, int n) {
     Serial.print("\t");
     Serial.println(bool(n));
   #endif
-  digitalWrite(pin,n);
+  digitalWrite(pin,!bool(n));
   return n;
 }
 
-void setup()
-{
-       #ifdef debug
-	Serial.begin(115200);
-       #endif
+void setup() {
+    
+    // write output pins HIGH before enabling outputs saves a blip of all relays on!
+    for (int i=outFrom; i<outTo; i++)
+      digitalWrite(i, HIGH);
 
-	initAutogenPins();
+ 	  initAutogenPins();
 
+    #ifdef debug
+	    Serial.begin(115200);
+    #endif
     ign = true; // Ignition/main. Inverse signal
     lightMode = 1;
 

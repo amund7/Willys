@@ -7,21 +7,21 @@
 #define blinkr	25
 #define comp	26
 #define rocklights	27
-#define rocklights2	28
-#define brake	29
-#define rygg	30
+#define brake	28
+#define rygg	29
+#define rocklights2	30
 #define wiper0	31
 #define wiper1	32
 #define horn	33
 #define fan0	34
 #define fan1	35
-#define radiator	36
 #define joyN	37
 #define joyW	38
 #define joyE	39
 #define joyS	40
 #define arbfront	41
 #define arbrear	42
+#define radiator	44
 #define clys	A0
 #define clowbeam	A1
 #define chibeaml	A2
@@ -56,21 +56,21 @@ void initAutogenPins() {
  pinMode(blinkr,INPUT_PULLUP);
  pinMode(comp,INPUT_PULLUP);
  pinMode(rocklights,INPUT_PULLUP);
- pinMode(rocklights2,INPUT_PULLUP);
  pinMode(brake,INPUT_PULLUP);
  pinMode(rygg,INPUT_PULLUP);
+ pinMode(rocklights2,INPUT_PULLUP);
  pinMode(wiper0,INPUT_PULLUP);
  pinMode(wiper1,INPUT_PULLUP);
  pinMode(horn,INPUT_PULLUP);
  pinMode(fan0,INPUT_PULLUP);
  pinMode(fan1,INPUT_PULLUP);
- pinMode(radiator,INPUT_PULLUP);
  pinMode(joyN,INPUT_PULLUP);
  pinMode(joyW,INPUT_PULLUP);
  pinMode(joyE,INPUT_PULLUP);
  pinMode(joyS,INPUT_PULLUP);
  pinMode(arbfront,INPUT_PULLUP);
  pinMode(arbrear,INPUT_PULLUP);
+ pinMode(radiator,INPUT_PULLUP);
  pinMode(clys,OUTPUT);
  pinMode(clowbeam,OUTPUT);
  pinMode(chibeaml,OUTPUT);
