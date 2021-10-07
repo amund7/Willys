@@ -328,23 +328,23 @@ private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e
 				 if (pinWriteable[i])
 					 checkedListBox1->SetItemCheckState(
 					 checkedListBox1->FindString(i.ToString()),
-					 (pinStatus[i]) ? CheckState::Checked : CheckState::Unchecked);
+					 (pinStatus[i]) ? CheckState::Unchecked : CheckState::Checked);
 				 for (int i = 0; i < 16; i++)
 				 if (pinWriteable[i + 54])
 					 checkedListBox2->SetItemCheckState(
 					 checkedListBox2->FindString("A" + i.ToString()),
-					 (pinStatus[i + 54]) ? CheckState::Checked : CheckState::Unchecked);
+					 (pinStatus[i + 54]) ? CheckState::Unchecked : CheckState::Checked);
 
 				 for (int i = 22; i < 54; i += 2)
 				 if (pinWriteable[i])
 					 checkedListBox3->SetItemCheckState(
 					 checkedListBox3->FindString(i.ToString()),
-					 (pinStatus[i]) ? CheckState::Checked : CheckState::Unchecked);
+					 (pinStatus[i]) ? CheckState::Unchecked : CheckState::Checked);
 				 for (int i = 23; i < 54; i += 2)
 				 if (pinWriteable[i])
 					 checkedListBox4->SetItemCheckState(
 					 checkedListBox4->FindString(i.ToString()),
-					 (pinStatus[i]) ? CheckState::Checked : CheckState::Unchecked);
+					 (pinStatus[i]) ? CheckState::Unchecked : CheckState::Checked);
 
 			label3->Text = "wiper interval "+(interval/1000).ToString();
 			label4->Text = "numWiperToggles " + numWiperToggles;
