@@ -22,16 +22,16 @@
 #define arbfront	41
 #define arbrear	42
 #define radiator	44
-#define clys	A0
-#define clowbeam	A1
-#define chibeaml	A2
+#define chibeaml	A0
+#define cblinkfl	A1
+#define clowbeam	A2
 #define chibeamr	A3
-#define cblinkfl	A4
-#define cblinkfr	A5
+#define cblinkfr	A4
+#define cbrakel	A5
 #define cblinkrl	A6
-#define cblinkrr	A7
-#define cbrakel	A8
-#define cbraker	A9
+#define clys	A7
+#define cbraker	A8
+#define cblinkrr	A9
 #define ccomp	A10
 #define cvf	A11
 #define chf	A12
@@ -43,10 +43,9 @@
 #define cwiper	6
 #define carbfront	7
 #define carbrear	8
-#define cspare2	9
-#define cspare3	10
-#define cspare4	11
-#define cspare5	12
+#define cspare1	9
+#define cspare2	10
+#define cspare3	11
 
   // Call this from setup()
 void initAutogenPins() {
@@ -71,16 +70,16 @@ void initAutogenPins() {
  pinMode(arbfront,INPUT_PULLUP);
  pinMode(arbrear,INPUT_PULLUP);
  pinMode(radiator,INPUT_PULLUP);
- pinMode(clys,OUTPUT);
- pinMode(clowbeam,OUTPUT);
  pinMode(chibeaml,OUTPUT);
- pinMode(chibeamr,OUTPUT);
  pinMode(cblinkfl,OUTPUT);
+ pinMode(clowbeam,OUTPUT);
+ pinMode(chibeamr,OUTPUT);
  pinMode(cblinkfr,OUTPUT);
- pinMode(cblinkrl,OUTPUT);
- pinMode(cblinkrr,OUTPUT);
  pinMode(cbrakel,OUTPUT);
+ pinMode(cblinkrl,OUTPUT);
+ pinMode(clys,OUTPUT);
  pinMode(cbraker,OUTPUT);
+ pinMode(cblinkrr,OUTPUT);
  pinMode(ccomp,OUTPUT);
  pinMode(cvf,OUTPUT);
  pinMode(chf,OUTPUT);
@@ -92,8 +91,7 @@ void initAutogenPins() {
  pinMode(cwiper,OUTPUT);
  pinMode(carbfront,OUTPUT);
  pinMode(carbrear,OUTPUT);
+ pinMode(cspare1,OUTPUT);
  pinMode(cspare2,OUTPUT);
  pinMode(cspare3,OUTPUT);
- pinMode(cspare4,OUTPUT);
- pinMode(cspare5,OUTPUT);
 };
