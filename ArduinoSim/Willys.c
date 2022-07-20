@@ -258,6 +258,7 @@ void loop()
     delay(20);
    #endif
 
+    delay(10);
 
 /*        Serial.println();
         Serial.print(bool(wVF));
